@@ -1,2 +1,1 @@
-# fr
-First Robotics Volunteer Management System
+SVSU First Robotics Volunteer Management System
