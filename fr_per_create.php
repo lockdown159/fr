@@ -200,14 +200,6 @@ if ( !empty($_POST)) { // if not first time through
 					</div>
 				</div>
 			  
-				<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
-					<label class="control-label">Picture</label>
-					<div class="controls">
-						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
-						<input name="userfile" type="file" id="userfile">
-					</div>
-				</div>
-			  
 				<div class="control-group <?php echo !empty($addressError)?'error':'';?>">
 					<label class="control-label">Address</label>
 					<div class="controls">
@@ -248,6 +240,14 @@ if ( !empty($_POST)) { // if not first time through
 					</div>
 				</div>
 				
+				<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+					</div>
+				</div>
+				
 				<div class="form-actions">
 					<button type="submit" class="btn btn-success">Create</button>
 					<a class="btn" href="fr_persons.php">Back</a>
@@ -259,10 +259,8 @@ if ( !empty($_POST)) { // if not first time through
 					<div class="controls ">
 					<?php 
 					if ($data['filesize'] > 0) 
-						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+						echo '<img  height=50%; width=50%; src="data:image/jpeg;base64,' . 
 							base64_encode( $data['filecontent'] ) . '" />'; 
-					else 
-						echo 'No photo on file.';
 					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
 					</div>
 				</div>

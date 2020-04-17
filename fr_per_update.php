@@ -251,7 +251,7 @@ if ( !empty($_POST)) { // if $_POST filled then process the form
 					<div class="controls ">
 					<?php 
 					if ($data['filesize'] > 0) 
-						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+						echo '<img  height=50%; width=50%; src="data:image/jpeg;base64,' . 
 							base64_encode( $data['filecontent'] ) . '" />'; 
 					else 
 						echo 'No photo on file.';

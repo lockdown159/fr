@@ -82,6 +82,18 @@ Database::disconnect();
 					</div>
 				</div>
 				
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=50%; width=50%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+				
 				<div class="form-actions">
 					<a class="btn btn-primary" href="fr_assign_create.php?event_id=<?php echo $id; ?>">Volunteer for this shift</a>
 					<a class="btn" href="fr_events.php">Back</a>

@@ -16,7 +16,8 @@ require '../database/database_fr.php';
 require 'functions.php';
 
 $id = $_GET['id'];
-
+try {
+        //all pdo code here
 $pdo = Database::connect();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -39,6 +40,10 @@ $q->execute(array($data['assign_event_id']));
 $eventdata = $q->fetch(PDO::FETCH_ASSOC);
 
 Database::disconnect();
+    } catch (PDOException $ex) {
+        echo  $ex->getMessage();
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -91,9 +96,24 @@ Database::disconnect();
 					</div>
 				</div>
 				
+				<div class='control-group col-md-6'>
+					<div class="controls ">
+					<?php 
+					if ($data['filesize'] > 0) 
+						echo '<img  height=5%; width=15%; src="data:image/jpeg;base64,' . 
+							base64_encode( $data['filecontent'] ) . '" />'; 
+					else 
+						echo 'No photo on file.';
+					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
+					</div>
+				</div>
+				
+				
 				<div class="form-actions">
 					<a class="btn" href="fr_assignments.php">Back</a>
 				</div>
+				
+				
 			
 			</div> <!-- end div: class="form-horizontal" -->
 			

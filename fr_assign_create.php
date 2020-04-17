@@ -29,14 +29,15 @@ if ( !empty($_POST)) {
 	$event = $_POST['event'];
 	
 	// initialize $_FILES variables
-	$fileName = $_FILES['assignfile']['name'];
+	$filename = $_FILES['assignfile']['name'];
 	$tmpName  = $_FILES['assignfile']['tmp_name'];
-	$fileSize = $_FILES['assignfile']['size'];
-	$fileType = $_FILES['assignfile']['type'];
-	$content = file_get_contents($tmpName);
-	
+	$filesize = $_FILES['assignfile']['size'];
+	$filetype = $_FILES['assignfile']['type'];
+	$filecontent = file_get_contents($tmpName);
+
 	// validate user input
 	$valid = true;
+	
 	if (empty($person)) {
 		$personError = 'Please choose a volunteer';
 		$valid = false;
@@ -48,7 +49,7 @@ if ( !empty($_POST)) {
 		// restrict file types for upload
 	$types = array('image/jpeg','image/gif','image/png');
 	if($filesize > 0) {
-		if(in_array($_FILES['userfile']['type'], $types)) {
+		if(in_array($_FILES['assignfile']['type'], $types)) {
 		}
 		else {
 			$filename = null;
@@ -60,20 +61,23 @@ if ( !empty($_POST)) {
 			
 		}
 	}
-		
+
 	// insert data
 	if ($valid) {
+		try {
+        //all pdo code here
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "INSERT INTO fr_assignments 
-			(assign_per_id,assign_event_id,
-		filename,filesize,filetype,filecontent) 
-			values(?, ?, ?, ?, ?, ?)";
+			(assign_per_id,assign_event_id,filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?)";
 		$q = $pdo->prepare($sql);
-		$q->execute(array($person,$event,
-		$fileName,$fileSize,$fileType,$content));
-		Database::disconnect();
-		header("Location: fr_assignments.php");
+		$q->execute(array($person,$event,$filename,$filesize,$filetype,$filecontent));
+	//	Database::disconnect();
+	//	header("Location: fr_assignments.php");
+    } catch (PDOException $ex) {
+        echo  $ex->getMessage();
+    }
+
 	}
 }
 ?>
@@ -96,7 +100,7 @@ if ( !empty($_POST)) {
 				<h3>Assign a Volunteer to an Event</h3>
 			</div>
 	
-			<form class="form-horizontal" action="fr_assign_create.php" method="post">
+			<form class="form-horizontal" action="fr_assign_create.php" method="post" enctype="multipart/form-data">
 		
 				<div class="control-group">
 					<label class="control-label">Volunteer</label>
@@ -148,6 +152,15 @@ if ( !empty($_POST)) {
 						?>
 					</div>	<!-- end div: class="controls" -->
 				</div> <!-- end div class="control-group" -->
+
+				<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="assignfile" type="file" id="assignfile">
+						
+					</div>
+				</div>
 
 				<div class="form-actions">
 					<button type="submit" class="btn btn-success">Confirm</button>

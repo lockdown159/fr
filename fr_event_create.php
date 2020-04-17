@@ -74,11 +74,9 @@ if ( !empty($_POST)) { // if not first time through
 	if ($valid) {
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$sql = "INSERT INTO fr_events (event_date, event_time, event_location, event_description,
-		filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO fr_events (event_date, event_time, event_location, event_description,filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?, ?, ?)";
 		$q = $pdo->prepare($sql);
-		$q->execute(array($date,$time,$location,$description,
-		$fileName,$fileSize,$fileType,$content));
+		$q->execute(array($date,$time,$location,$description,$fileName,$fileSize,$fileType,$content));
 		Database::disconnect();
 		header("Location: fr_events.php");
 	}
@@ -106,7 +104,7 @@ if ( !empty($_POST)) { // if not first time through
 				<h3>Add New Shift</h3>
 			</div>
 	
-			<form class="form-horizontal" action="fr_event_create.php" method="post">
+			<form class="form-horizontal" action="fr_event_create.php" method="post" enctype="multipart/form-data">
 			
 				<div class="control-group <?php echo !empty($dateError)?'error':'';?>">
 					<label class="control-label">Date</label>
@@ -148,13 +146,15 @@ if ( !empty($_POST)) { // if not first time through
 					</div>
 				</div>
 				
-				<div class="form-actions">
-					<button type="submit" class="btn btn-success">Create</button>
-					<a class="btn" href="fr_events.php">Back</a>
+								<div class="control-group <?php echo !empty($pictureError)?'error':'';?>">
+					<label class="control-label">Picture</label>
+					<div class="controls">
+						<input type="hidden" name="MAX_FILE_SIZE" value="16000000">
+						<input name="userfile" type="file" id="userfile">
+						
+					</div>
 				</div>
 				
-			</form>
-			
 				<div class='control-group col-md-6'>
 					<div class="controls ">
 					<?php 
@@ -166,6 +166,13 @@ if ( !empty($_POST)) { // if not first time through
 					?><!-- converts to base 64 due to the need to read the binary files code and display img -->
 					</div>
 				</div>
+				
+				<div class="form-actions">
+					<button type="submit" class="btn btn-success">Create</button>
+					<a class="btn" href="fr_events.php">Back</a>
+				</div>
+				
+			</form>
 			
 		</div> <!-- div: class="container" -->
 				
