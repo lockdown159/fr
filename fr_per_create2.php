@@ -39,10 +39,10 @@ if ( !empty($_POST)) { // if not first time through
 	$passwordhash = MD5($password);
 	$title =  $_POST['title'];
 	$picture = $_POST['picture']; // not used
-	$addressError = $_POST['address'];
-	$cityError = $_POST['city'];
-	$stateError = $_POST['state'];
-	$zipcodeError = $_POST['zipcode'];
+	$address = $_POST['address'];
+	$city = $_POST['city'];
+	$state = $_POST['state'];
+	$zipcode = $_POST['zipcode'];
 	
 	// initialize $_FILES variables
 	$fileName = $_FILES['userfile']['name'];
@@ -125,10 +125,10 @@ if ( !empty($_POST)) { // if not first time through
 		
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "INSERT INTO fr_persons (fname,lname,email,mobile,password,title,
-		filename,filesize,filetype,filecontent) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		filename,filesize,filetype,filecontent,address,city,state,zipcode) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$q = $pdo->prepare($sql);
 		$q->execute(array($fname,$lname,$email,$mobile,$passwordhash,$title,
-		$fileName,$fileSize,$fileType,$content));
+		$fileName,$fileSize,$fileType,$content,$address,$city,$state,$zipcode));
 		
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$sql = "SELECT * FROM fr_persons WHERE email = ? AND password = ? LIMIT 1";
